@@ -397,36 +397,55 @@ FROM
 ------------
 
 -- NVL 함수
-select first_name, salary, commission_pct,
-salary * nvl(commission_pct,0) as commission
-from employees;
+SELECT
+    first_name,
+    salary,
+    commission_pct,
+    salary * nvl(commission_pct, 0) AS commission
+FROM
+    employees;
 
 -- NVL2 함수
-select first_name, salary, commission_pct,
-nvl2(commission_pct, salary * commission_pct,0) as commission
-from employees;
+SELECT
+    first_name,
+    salary,
+    commission_pct,
+    nvl2(commission_pct, salary * commission_pct, 0) AS commission
+FROM
+    employees;
 
 -- CASE 함수
 -- AD 관련 직원에게는 20%, SA 관련 직원에게는 10%,
 -- IT 관련 직원에게는 8%, 나머지는 5%
-select first_name, job_id, substr(job_id,1,2), salary,
-case substr(job_id,1,2) 
-when 'ad' then salary * 0.2
-when 'sa' then salary * 0.1 
-when 'it' then salary * 0.08
-else salary * 0.05
-end bonus
-from employees;
+SELECT
+    first_name,
+    job_id,
+    substr(job_id, 1, 2),
+    salary,
+    CASE substr(job_id, 1, 2)
+        WHEN 'ad' THEN
+            salary * 0.2
+        WHEN 'sa' THEN
+            salary * 0.1
+        WHEN 'it' THEN
+            salary * 0.08
+        ELSE
+            salary * 0.05
+    END bonus
+FROM
+    employees;
 
 -- DECODE 함수
-select first_name, job_id, salary, substr(job_id,1,2),
-decode(substr(job_id,1,2),
-'ad', salary * 0.2,
-'sa', salary * 0.1,
-'it', salary * 0.08,
-salary * 0.05) -- else
-bonus
-from employees;
+SELECT
+    first_name,
+    job_id,
+    salary,
+    substr(job_id, 1, 2),
+    decode(substr(job_id, 1, 2), 'ad', salary * 0.2, 'sa', salary * 0.1,
+           'it', salary * 0.08, salary * 0.05) -- else
+            bonus
+FROM
+    employees;
 
 -- 연습문제:
 -- 직원의 이름, 부서, 팀을 출력
@@ -435,13 +454,97 @@ from employees;
 -- 부서 코드: 40~50 -> B-Group
 -- 부서 코드: 60~100 -> C-Group
 -- 나머지는 REMAINDER
+
+SELECT
+    *
+FROM
+    employees;
+
+SELECT
+    first_name,
+    department_id,
+    CASE
+        WHEN department_id IN ( 10, 20, 30 ) THEN
+            'A-Group'
+        WHEN department_id IN ( 40, 50 ) THEN
+            'B-Group'
+        WHEN department_id IN ( 60, 70, 80, 90, 100 ) THEN
+            'C-Group'
+        ELSE
+            'REMAINDER'
+    END team
+FROM
+    employees;
+    
+    
 select * from employees;
 
-select first_name, department_id, 
-case 
-when department_id in(10,20,30) then 'A-Group'
-when department_id in(40,50) then 'B-Group'
-when department_id in(60,70,80,90,100) then 'C-Group'
-else 'REMAINDER'
-end team
-from employees;
+-- 문제 1 끝
+select first_name || last_name as 이름,
+salary as 월급,
+phone_number as 전화번호,
+hire_date as 입사일
+from employees
+order by hire_date;
+
+-- 문제 2 끝??
+select job_title 업무이름,
+max_salary 최고월급
+from jobs
+order by max_salary desc;
+
+-- 문제 3 끝
+select first_name 이름,
+manager_id "매니저 아이디",
+commission_pct "커미션 비율",
+salary 월급
+from employees
+where manager_id is not null and
+commission_pct is null and
+salary >= 3000;
+
+-- 문제 4 끝
+select job_title 업무이름,
+max_salary 최고월급
+from jobs
+where max_salary >= 10000
+order by max_salary desc;
+
+-- 문제5 끝
+select first_name 이름,
+salary 월급,
+nvl(commission_pct, 0) 커미션퍼센트
+from employees
+order by salary desc;
+
+-- 문제 6 끝
+select first_name 이름,
+salary 월급,
+to_char(hire_date, 'yyyy-mm') 입사일,
+department_id  부서번호
+from employees
+where department_id in(10,90,100);
+
+-- 문제 7 끝
+select first_name 이름,
+salary 월급
+from employees
+where first_name like ('%S%') or first_name like('%s%');
+
+-- 문제 8 끝
+select department_name
+from departments
+order by length(department_name) desc;
+
+-- 문제 9 끝
+select country_name 나라이름
+from countries
+where substr(country_name,1,2) = initcap(country_id);
+
+-- 문제 10 끝
+select first_name 이름,
+salary 월급,
+replace(phone_number, '.', '-') "전화 번호",
+hire_date 입사일
+from employees
+where hire_date <= '03/12/31';
