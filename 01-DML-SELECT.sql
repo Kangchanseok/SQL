@@ -548,3 +548,46 @@ replace(phone_number, '.', '-') "전화 번호",
 hire_date 입사일
 from employees
 where hire_date <= '03/12/31';
+
+-- pdf 연습 
+select first_name
+from employees
+where hire_date between '07/01/01' and '07/12/31';
+ 
+select first_name,
+salary
+from employees
+where first_name like '%am%';
+
+select first_name,
+salary
+from employees
+where first_name like '_a%';
+
+select first_name,
+salary
+from employees
+where first_name like '___a%';
+
+select first_name,
+salary
+from employees
+where first_name like '__a_';
+
+select department_id 부서번호,
+salary 급여,
+first_name 이름
+from employees
+order by department_id; 
+
+select first_name 이름,
+salary 급여
+from employees
+where salary >= 10000
+order by salary desc;
+
+select department_id 부서번호,
+salary 급여,
+first_name 이름
+from employees
+order by department_id asc, salary desc;
