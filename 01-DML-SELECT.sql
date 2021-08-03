@@ -435,3 +435,13 @@ from employees;
 -- 부서 코드: 40~50 -> B-Group
 -- 부서 코드: 60~100 -> C-Group
 -- 나머지는 REMAINDER
+select * from employees;
+
+select first_name, department_id, 
+case 
+when department_id in(10,20,30) then 'A-Group'
+when department_id in(40,50) then 'B-Group'
+when department_id in(60,70,80,90,100) then 'C-Group'
+else 'REMAINDER'
+end team
+from employees;
