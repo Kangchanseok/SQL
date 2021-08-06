@@ -55,3 +55,60 @@ grant select on hr.employees to c##bituser;
 
 -- 전체 권한 부여시
 -- GRANT all previleges ...
+
+
+----------
+---ddl----
+--------
+
+-- 이후 c##bituser로 진행
+
+-- 현재 내가 소유한 테이블 목록 확인
+select * from tab;
+-- 현재 나에게 주어진 role을 조회
+select * from user_role_privs;
+-- create table: 테이블 생성
+create table book(
+book_id number(5),
+title varchar2(50),
+author varchar2(10),
+pub_date date default sysdate);
+
+select * from tab;
+desc book; 
+
+-- 서브쿼리를 이용한 테이블 생성
+-- hr 스키마의 employees 테이블의 일부 데이터를 추출, 새 테이블 생성
+select * from hr.employees;
+
+-- job_id 가 it관련 직원들만 뽑아내서 새 테이블 생성
+create table it_emps as( select * from hr.employees
+where job_id like 'IT_%');
+
+desc it_emps;
+select * from it_emps;
+
+-- author 테이블 추가
+create table author(
+author_id number(10),
+author_name varchar2(50) not null,
+author_desc varchar2(500),
+primary key (author_id)); -- 테이블 제약
+
+desc author;
+
+-- book 테이블의 author 컬럼 지우기
+-- 나중에 author 테이블과 fk연결
+desc book;
+alter table book drop column author;
+desc book;
+
+-- author 테이블 참조를 위한 컬럼 author_id 추가
+alter table book
+add (author_id number(10));
+
+-- book 테이블의 book_id도 number(10)으로 변경
+alter table book
+modify (book_id number(10));
+
+desc book;
