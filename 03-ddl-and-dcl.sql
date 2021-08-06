@@ -112,3 +112,15 @@ alter table book
 modify (book_id number(10));
 
 desc book;
+
+-- book.book_id에 pk 제약조건부여
+desc author;
+alter table book
+add constraint pk_book_id primary key (book_id);
+
+-- book.aurhor_id를 author.author_id를 참조하도록 제약
+alter table book
+add constraint fk_author_id foreign key( author_id)
+references author(author_id)
+on delete cascade;
+
