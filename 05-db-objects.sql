@@ -79,3 +79,33 @@ select * from user_objects;
 
 select object_name, object_type, status from user_objects
 where object_type = 'view';
+
+-- index : 검색 속도 증가
+-- insert, update, delete -> 인덱스의 갱신 발생
+-- hr.employees 테이블 복사 -> s_emp 테이블 생성
+create table s_emp
+as select * from hr.employees;
+
+select * from s_emp;
+
+-- s_emp.employee_id 에 unique_index 부여
+create unique index s_emp_id
+on s_emp (employee_id);
+
+-- index 위한 dictionary
+select * from user_indexes;
+select * from user_ind_columns;
+
+-- 어느 테이블에 어느 컬럼에 s_emp_id가 부여되었는가?
+select t.index_name, t.table_name, c.column_name, c.column_position
+from user_indexes t,user_ind_columns c
+where t.index_name = c.index_name and
+t.table_name = 'S_EMP';
+
+select * from s_emp;
+
+-- 인덱스 삭제
+drop index s_emp_id;
+select * from user_indexes;
+
+-- 인덱스는 테이블과 독립적: 인덱스 삭제해도 테이블 데이터는 남아있음
